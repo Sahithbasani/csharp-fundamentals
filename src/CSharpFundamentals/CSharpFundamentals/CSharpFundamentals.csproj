@@ -12,19 +12,12 @@
     <Folder Include="Examples\BankingSystem\" />
     <Folder Include="Examples\EmployeeManagement\" />
     <Folder Include="Examples\StudentManagement\" />
-    <Folder Include="Modules\01-Variables\" />
-    <Folder Include="Modules\02-DataTypes\" />
-    <Folder Include="Modules\03-TypeConversion\" />
-    <Folder Include="Modules\04-Operators\" />
-    <Folder Include="Modules\05-Strings\" />
-    <Folder Include="Modules\06-Arrays\" />
-    <Folder Include="Modules\07-Methods\" />
-    <Folder Include="Modules\08-ControlFlow\" />
-    <Folder Include="Modules\09-ExceptionHandling\" />
-    <Folder Include="Modules\10-Namespaces\" />
-    <Folder Include="Utilities\ConsoleHelper.cs\" />
-    <Folder Include="Utilities\InputValidator.cs\" />
-    <Folder Include="Utilities\MenuHelper.cs\" />
+    <Folder Include="Modules\01-Variables\InterviewQuestions.md\" />
+    <Folder Include="Modules\01-Variables\VariablesExample.cs\" />
+    <Folder Include="Modules\01-Variables\README.md\" />
+    <Folder Include="Modules\Utilities\ConsoleHelper.cs\" />
+    <Folder Include="Modules\Utilities\InputValidator.cs\" />
+    <Folder Include="Modules\Utilities\MenuHelper.cs\" />
   </ItemGroup>
 
 </Project>

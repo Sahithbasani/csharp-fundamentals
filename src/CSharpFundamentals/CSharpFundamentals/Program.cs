@@ -1,4 +1,6 @@
 ﻿using System;
+using CSharpFundamentals.Modules.Variables;
+using CSharpFundamentals.Utilities;
 
 namespace CSharpFundamentals
 {
@@ -8,29 +10,38 @@ namespace CSharpFundamentals
         {
             Console.Title = "C# Fundamentals";
 
-            Console.WriteLine("=========================================");
-            Console.WriteLine("      C# Fundamentals Repository");
-            Console.WriteLine("=========================================");
+            var topics = new[]
+            {
+                "Variables",
+                "Data Types",
+                "Type Conversion",
+                "Operators",
+                "Strings",
+                "Arrays",
+                "Methods",
+                "Control Flow",
+                "Exception Handling",
+                "Namespaces"
+            };
+
+            ConsoleHelper.PrintHeader("C# Fundamentals Repository");
+            ConsoleHelper.PrintMenu(topics);
+
+            int choice = ConsoleHelper.PromptSelection(1, topics.Length);
 
             Console.WriteLine();
 
-            Console.WriteLine("Topics Included:");
+            switch (choice)
+            {
+                case 1:
+                    VariablesExample.Run();
+                    break;
+                default:
+                    Console.WriteLine("This module is not implemented yet. Visit the Modules folder to add examples.");
+                    break;
+            }
 
-            Console.WriteLine("1. Variables");
-            Console.WriteLine("2. Data Types");
-            Console.WriteLine("3. Type Conversion");
-            Console.WriteLine("4. Operators");
-            Console.WriteLine("5. Strings");
-            Console.WriteLine("6. Arrays");
-            Console.WriteLine("7. Methods");
-            Console.WriteLine("8. Control Flow");
-            Console.WriteLine("9. Exception Handling");
-            Console.WriteLine("10. Namespaces");
-
-            Console.WriteLine();
-            Console.WriteLine("Happy Learning!");
-
-            Console.ReadKey();
+            ConsoleHelper.Pause();
         }
     }
 }
