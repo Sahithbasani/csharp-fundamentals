@@ -1,6 +1,6 @@
 # Runnable Backend Examples
 
-[← Repository home](../README.md) · [Curriculum](../docs/README.md)
+[← Repository home](../README.md) · [Module index](../README.md#module-index)
 
 These examples are small enough to run locally while using domains and design concerns found in backend services.
 
