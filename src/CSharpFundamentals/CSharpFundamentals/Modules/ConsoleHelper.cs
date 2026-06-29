@@ -36,6 +36,11 @@ namespace CSharpFundamentals.Utilities
 
         public static void Pause()
         {
+            if (Console.IsInputRedirected)
+            {
+                return;
+            }
+
             Console.WriteLine();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);

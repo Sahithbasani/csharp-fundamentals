@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,18 +6,5 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Examples\Calculator\" />
-    <Folder Include="Examples\BankingSystem\" />
-    <Folder Include="Examples\EmployeeManagement\" />
-    <Folder Include="Examples\StudentManagement\" />
-    <Folder Include="Modules\01-Variables\InterviewQuestions.md\" />
-    <Folder Include="Modules\01-Variables\VariablesExample.cs\" />
-    <Folder Include="Modules\01-Variables\README.md\" />
-    <Folder Include="Modules\Utilities\ConsoleHelper.cs\" />
-    <Folder Include="Modules\Utilities\InputValidator.cs\" />
-    <Folder Include="Modules\Utilities\MenuHelper.cs\" />
-  </ItemGroup>
 
 </Project>
