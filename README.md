@@ -24,7 +24,7 @@ The repository teaches through orders, payments, users, notifications, claims, r
 - [Quick Navigation](#quick-navigation)
 - [Curriculum](#curriculum)
 - [Repository Structure](#repository-structure)
-- [Run the Example](#run-the-example)
+- [Runnable Backend Examples](#runnable-backend-examples)
 - [Learning Method](#learning-method)
 - [Contributing](#contributing)
 - [License](#license)
@@ -71,18 +71,31 @@ csharp-fundamentals/
 │   ├── beginner/                   # Language foundations
 │   ├── intermediate/               # Service and application design
 │   └── advanced/                   # Runtime and extensibility
+├── examples/                       # Execution guide and expected behavior
 ├── src/CSharpFundamentals/         # Runnable order-processing example
 ├── LICENSE
 └── README.md
 ```
 
-## Run the Example
+## Runnable Backend Examples
 
 Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
+
+Run all examples:
 
 ```bash
 dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
 ```
+
+Run one example:
+
+```bash
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- order
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- payment
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- notification
+```
+
+See the [runnable examples guide](./examples/README.md) for learning objectives and expected behavior.
 
 ## Learning Method
 
