@@ -1,10 +1,12 @@
 <div align="center">
   <img src="./assets/csharp-fundamentals-banner.svg" alt="C# engineering reference" width="100%" />
 
+  [![Build](https://github.com/Sahithbasani/csharp-fundamentals/actions/workflows/build.yml/badge.svg)](https://github.com/Sahithbasani/csharp-fundamentals/actions/workflows/build.yml)
+  [![Markdown Links](https://github.com/Sahithbasani/csharp-fundamentals/actions/workflows/markdown-links.yml/badge.svg)](https://github.com/Sahithbasani/csharp-fundamentals/actions/workflows/markdown-links.yml)
   [![C#](https://img.shields.io/badge/C%23-engineering-512BD4?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
   [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
   [![Modules](https://img.shields.io/badge/modules-10-0F766E)](#module-index)
-  [![License](https://img.shields.io/badge/license-MIT-2563EB)](./LICENSE)
+  [![License](https://img.shields.io/github/license/Sahithbasani/csharp-fundamentals?color=2563EB)](./LICENSE)
 </div>
 
 # C# Engineering Fundamentals
@@ -16,6 +18,7 @@ This repository is not organized as a syntax tutorial. Each module is an enginee
 ## Table of Contents
 
 - [Engineering Model](#engineering-model)
+- [Engineering Quality](#engineering-quality)
 - [Module Index](#module-index)
 - [Documentation Standard](#documentation-standard)
 - [Runnable Scenarios](#runnable-scenarios)
@@ -33,6 +36,16 @@ flowchart LR
     Performance --> Operations["Production behavior"]
     Operations --> Review["Review and interview reasoning"]
 ```
+
+## Engineering Quality
+
+Repository quality is enforced through small, reviewable changes and automated verification:
+
+- **Continuous integration:** every push to `main` or a feature branch and every pull request to `main` restores and builds the solution in Release mode.
+- **Strict compilation:** CI treats compiler warnings as errors to prevent warning debt from entering the stable branch.
+- **Documentation integrity:** Markdown links are checked automatically when documentation changes.
+- **Reproducible tooling:** workflows install the .NET 10 SDK explicitly instead of relying on the runner's preinstalled SDKs.
+- **Testing policy:** no automated test project exists yet; when one is introduced, its test job should become a required pull-request check.
 
 ## Module Index
 
