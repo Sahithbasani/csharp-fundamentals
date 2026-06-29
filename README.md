@@ -1,117 +1,114 @@
 <div align="center">
-  <img src="./assets/csharp-fundamentals-banner.svg" alt="C# Fundamentals — practical backend engineering curriculum" width="100%" />
+  <img src="./assets/csharp-fundamentals-banner.svg" alt="C# engineering reference" width="100%" />
 
-  <br />
-
-  [![C#](https://img.shields.io/badge/C%23-language-512BD4?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
+  [![C#](https://img.shields.io/badge/C%23-engineering-512BD4?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
   [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-  [![Curriculum](https://img.shields.io/badge/curriculum-beginner%20to%20advanced-0F766E)](./docs/README.md)
+  [![Modules](https://img.shields.io/badge/modules-10-0F766E)](#module-index)
   [![License](https://img.shields.io/badge/license-MIT-2563EB)](./LICENSE)
 </div>
 
-# C# Fundamentals
+# C# Engineering Fundamentals
 
-A practical C# curriculum connecting language features to maintainable .NET backend services.
+A production-focused reference for C# language semantics, runtime behavior, API design, performance, and enterprise application development.
 
-The repository teaches through orders, payments, users, notifications, claims, repositories, and background processing. It avoids isolated toy models and explains how each feature affects correctness, testability, performance, and operations.
-
-> [!NOTE]
-> Examples focus on one concept. Production systems still require security, observability, persistence design, and tests appropriate to their risk.
+This repository is not organized as a syntax tutorial. Each module is an engineering dossier containing theory, memory and performance analysis, production notes, failure patterns, review guidance, senior interview questions, and compileable backend examples.
 
 ## Table of Contents
 
-- [Learning Path](#learning-path)
-- [Quick Navigation](#quick-navigation)
-- [Curriculum](#curriculum)
+- [Engineering Model](#engineering-model)
+- [Module Index](#module-index)
+- [Documentation Standard](#documentation-standard)
+- [Runnable Scenarios](#runnable-scenarios)
+- [Build and Validate](#build-and-validate)
 - [Repository Structure](#repository-structure)
-- [Runnable Backend Examples](#runnable-backend-examples)
-- [Learning Method](#learning-method)
-- [Contributing](#contributing)
-- [License](#license)
+- [Contribution Standard](#contribution-standard)
 
-## Learning Path
+## Engineering Model
 
 ```mermaid
 flowchart LR
-    Types["Type-safe foundations"] --> Flow["Business decisions"]
-    Flow --> Data["Collections and errors"]
-    Data --> Design["OOP and SOLID"]
-    Design --> DI["Interfaces and DI"]
-    DI --> Async["Async services"]
-    Async --> Runtime["Runtime-aware engineering"]
+    Semantics["Language semantics"] --> Contracts["API contracts"]
+    Contracts --> Runtime["Memory and runtime"]
+    Runtime --> Performance["Measured performance"]
+    Performance --> Operations["Production behavior"]
+    Operations --> Review["Review and interview reasoning"]
 ```
 
-## Quick Navigation
+## Module Index
 
-| Goal | Start here |
-| --- | --- |
-| Learn language foundations | [Variables, Types, and Nullability](./docs/beginner/variables-and-types.md) |
-| Write clear business logic | [Control Flow and Method Design](./docs/beginner/control-flow-and-methods.md) |
-| Design maintainable services | [Object-Oriented Design and SOLID](./docs/intermediate/object-oriented-design.md) |
-| Understand composition | [Interfaces and Dependency Injection](./docs/intermediate/interfaces-and-dependency-injection.md) |
-| Build responsive backends | [Async/Await and Cancellation](./docs/intermediate/async-await.md) |
-| Diagnose runtime trade-offs | [Memory, Allocation, and Performance](./docs/advanced/memory-and-performance.md) |
+| Module | Engineering area | Code examples |
+| ---: | --- | ---: |
+| [01](./src/CSharpFundamentals/CSharpFundamentals/Modules/01-Variables/README.md) | Variables and State | 4 |
+| [02](./src/CSharpFundamentals/CSharpFundamentals/Modules/02-DataTypes/README.md) | Data Types and Representation | 5 |
+| [03](./src/CSharpFundamentals/CSharpFundamentals/Modules/03-TypeConversion/README.md) | Type Conversion and Boundary Parsing | 5 |
+| [04](./src/CSharpFundamentals/CSharpFundamentals/Modules/04-Operators/README.md) | Operators and Expression Semantics | 8 |
+| [05](./src/CSharpFundamentals/CSharpFundamentals/Modules/05-Strings/README.md) | Strings, Text, Culture, and Encoding | 8 |
+| [06](./src/CSharpFundamentals/CSharpFundamentals/Modules/06-Arrays/README.md) | Arrays, Spans, and Contiguous Memory | 8 |
+| [07](./src/CSharpFundamentals/CSharpFundamentals/Modules/07-Methods/README.md) | Methods, Contracts, and API Shape | 4 |
+| [08](./src/CSharpFundamentals/CSharpFundamentals/Modules/08-ControlFlow/README.md) | Control Flow and Business Decisions | 4 |
+| [09](./src/CSharpFundamentals/CSharpFundamentals/Modules/09-ExceptionHandling/README.md) | Exceptions, Resilience, and Failure Semantics | 4 |
+| [10](./src/CSharpFundamentals/CSharpFundamentals/Modules/10-Namespaces/README.md) | Namespaces, Assemblies, and Dependency Boundaries | 4 |
 
-## Curriculum
+## Documentation Standard
 
-| Level | Focus | Chapters |
-| --- | --- | ---: |
-| Beginner | Types, control flow, collections, validation | 4 |
-| Intermediate | OOP, dependency injection, async, generics | 4 |
-| Advanced | Pipelines, memory, concurrency, reflection | 4 |
+Every module contains:
 
-Browse the complete [curriculum index](./docs/README.md).
+- `README.md` — decision-oriented overview and navigation;
+- `Theory.md` — language and runtime semantics;
+- `BestPractices.md` — implementation and review checklist;
+- `CommonMistakes.md` — production failure patterns;
+- `InterviewQuestions.md` — 10 senior-level questions with answers;
+- `ProductionNotes.md` — enterprise use, memory, performance, and Microsoft-aligned recommendations;
+- compileable `.cs` examples using orders, payments, users, claims, services, and infrastructure boundaries.
+
+## Runnable Scenarios
+
+The application includes executable order processing, payment validation, and notification dispatch examples.
+
+```bash
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- payment
+```
+
+See the [execution guide](./examples/README.md).
+
+## Build and Validate
+
+Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
+
+```bash
+dotnet restore src/CSharpFundamentals/CSharpFundamentals.slnx
+dotnet build src/CSharpFundamentals/CSharpFundamentals.slnx --configuration Release
+```
 
 ## Repository Structure
 
 ```text
 csharp-fundamentals/
-├── assets/                         # Original repository banner
-├── docs/
-│   ├── beginner/                   # Language foundations
-│   ├── intermediate/               # Service and application design
-│   └── advanced/                   # Runtime and extensibility
-├── examples/                       # Execution guide and expected behavior
-├── src/CSharpFundamentals/         # Runnable order-processing example
-├── LICENSE
-└── README.md
+├── assets/
+├── examples/
+└── src/CSharpFundamentals/CSharpFundamentals/
+    ├── Examples/                  # Executable cross-topic scenarios
+    └── Modules/
+        ├── 01-Variables/
+        ├── 02-DataTypes/
+        ├── 03-TypeConversion/
+        ├── 04-Operators/
+        ├── 05-Strings/
+        ├── 06-Arrays/
+        ├── 07-Methods/
+        ├── 08-ControlFlow/
+        ├── 09-ExceptionHandling/
+        └── 10-Namespaces/
 ```
 
-## Runnable Backend Examples
+## Contribution Standard
 
-Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
-
-Run all examples:
-
-```bash
-dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
-```
-
-Run one example:
-
-```bash
-dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- order
-dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- payment
-dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- notification
-```
-
-See the [runnable examples guide](./examples/README.md) for learning objectives and expected behavior.
-
-## Learning Method
-
-1. Read the overview and explain why the feature matters in a backend.
-2. Reproduce the example without copying it.
-3. Change one business rule and predict the result.
-4. Review the production notes and common mistakes.
-5. Answer interview questions using rule → example → trade-off.
-
-## Contributing
-
-- Use realistic backend examples.
-- Preserve chapter sections and adjacent-page navigation.
-- Prefer primary Microsoft documentation.
-- Verify code and Markdown links.
-- Do not add unexplained snippets, empty placeholders, or duplicated topics.
+- Explain the production decision, not only the syntax.
+- Keep examples compileable and domain-oriented.
+- Include memory, performance, failure, and testing implications.
+- Prefer primary Microsoft references.
+- Avoid toy models, empty placeholders, and unexplained snippets.
 
 ## License
 
@@ -119,4 +116,4 @@ Distributed under the [MIT License](./LICENSE).
 
 ---
 
-<div align="center">A practical bridge between C# syntax and production backend engineering.</div>
+<div align="center">C# semantics connected to production engineering decisions.</div>
