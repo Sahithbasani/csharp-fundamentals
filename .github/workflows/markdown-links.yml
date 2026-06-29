@@ -1,0 +1,39 @@
+name: Markdown Links
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.md"
+      - ".github/workflows/markdown-links.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**/*.md"
+      - ".github/workflows/markdown-links.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Validate Markdown links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2.8.0
+        with:
+          args: >-
+            --root-dir "${{ github.workspace }}"
+            --verbose
+            --no-progress
+            "./**/*.md"
+          fail: true
+          jobSummary: true
