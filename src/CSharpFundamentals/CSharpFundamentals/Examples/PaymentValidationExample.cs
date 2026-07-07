@@ -2,6 +2,8 @@ namespace CSharpFundamentals.Examples;
 
 public sealed class PaymentValidationExample : IBackendExample
 {
+    private readonly PaymentDecisionEngine _engine = new();
+
     public string Name => "Payment validation";
 
     public string Description =>
@@ -17,52 +19,12 @@ public sealed class PaymentValidationExample : IBackendExample
             "USD",
             RiskLevel.High);
 
-        PaymentDecision decision = Evaluate(request);
+        PaymentDecision decision = _engine.Evaluate(request);
 
         Console.WriteLine($"Payment ID: {request.PaymentId}");
         Console.WriteLine($"Decision: {decision.Status}");
         Console.WriteLine($"Reason: {decision.Reason}");
 
         return Task.CompletedTask;
-    }
-
-    private static PaymentDecision Evaluate(PaymentRequest request) =>
-        request switch
-        {
-            { Amount: <= 0 } =>
-                PaymentDecision.Rejected("Amount must be positive."),
-            { Currency: not "USD" and not "CAD" } =>
-                PaymentDecision.Rejected("Currency is not supported."),
-            { RiskLevel: RiskLevel.High } =>
-                PaymentDecision.Review("High-risk payment requires manual review."),
-            { Amount: > 10_000m } =>
-                PaymentDecision.Review("Large payment requires manual review."),
-            _ =>
-                PaymentDecision.Approved()
-        };
-
-    private sealed record PaymentRequest(
-        Guid PaymentId,
-        decimal Amount,
-        string Currency,
-        RiskLevel RiskLevel);
-
-    private sealed record PaymentDecision(string Status, string Reason)
-    {
-        public static PaymentDecision Approved() =>
-            new("Approved", "Payment passed validation.");
-
-        public static PaymentDecision Review(string reason) =>
-            new("Manual review", reason);
-
-        public static PaymentDecision Rejected(string reason) =>
-            new("Rejected", reason);
-    }
-
-    private enum RiskLevel
-    {
-        Low,
-        Medium,
-        High
     }
 }

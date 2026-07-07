@@ -1,5 +1,6 @@
 using CSharpFundamentals.Examples;
 using CSharpFundamentals.Utilities;
+using CSharpFundamentals.Verification;
 
 Console.Title = "C# Fundamentals: Backend Examples";
 
@@ -13,10 +14,13 @@ IReadOnlyDictionary<string, IBackendExample> examples =
 
 if (args.Length > 0)
 {
+    if (string.Equals(args[0], "verify", StringComparison.OrdinalIgnoreCase))
+        return await new ExampleVerificationRunner().RunAsync(Console.Out, CancellationToken.None);
+
     if (!examples.TryGetValue(args[0], out var selected))
     {
         Console.Error.WriteLine($"Unknown example '{args[0]}'.");
-        Console.Error.WriteLine($"Available examples: {string.Join(", ", examples.Keys)}");
+        Console.Error.WriteLine($"Available commands: verify, {string.Join(", ", examples.Keys)}");
         return 1;
     }
 

@@ -23,6 +23,7 @@ This repository is not organized as a syntax tutorial. Each module is an enginee
 - [Documentation Standard](#documentation-standard)
 - [Runnable Scenarios](#runnable-scenarios)
 - [Build and Validate](#build-and-validate)
+- [Technical Blog Watch](#technical-blog-watch)
 - [Repository Structure](#repository-structure)
 - [Contribution Standard](#contribution-standard)
 
@@ -41,11 +42,11 @@ flowchart LR
 
 Repository quality is enforced through small, reviewable changes and automated verification:
 
-- **Continuous integration:** every push to `main` or a feature branch and every pull request to `main` restores and builds the solution in Release mode.
+- **Continuous integration:** every push to `main` or a feature branch and every pull request to `main` restores, builds, and verifies the executable examples in Release mode.
 - **Strict compilation:** CI treats compiler warnings as errors to prevent warning debt from entering the stable branch.
+- **Behavior verification:** `dotnet run -- verify` exercises the example decision paths and fails fast when expected outcomes drift.
 - **Documentation integrity:** Markdown links are checked automatically when documentation changes.
 - **Reproducible tooling:** workflows install the .NET 10 SDK explicitly instead of relying on the runner's preinstalled SDKs.
-- **Testing policy:** no automated test project exists yet; when one is introduced, its test job should become a required pull-request check.
 
 ## Module Index
 
@@ -66,21 +67,22 @@ Repository quality is enforced through small, reviewable changes and automated v
 
 Every module contains:
 
-- `README.md` — decision-oriented overview and navigation;
-- `Theory.md` — language and runtime semantics;
-- `BestPractices.md` — implementation and review checklist;
-- `CommonMistakes.md` — production failure patterns;
-- `InterviewQuestions.md` — 10 senior-level questions with answers;
-- `ProductionNotes.md` — enterprise use, memory, performance, and Microsoft-aligned recommendations;
-- compileable `.cs` examples using orders, payments, users, claims, services, and infrastructure boundaries.
+- `README.md` - decision-oriented overview and navigation
+- `Theory.md` - language and runtime semantics
+- `BestPractices.md` - implementation and review checklist
+- `CommonMistakes.md` - production failure patterns
+- `InterviewQuestions.md` - 10 senior-level questions with answers
+- `ProductionNotes.md` - enterprise use, memory, performance, and Microsoft-aligned recommendations
+- compileable `.cs` examples using orders, payments, users, claims, services, and infrastructure boundaries
 
 ## Runnable Scenarios
 
-The application includes executable order processing, payment validation, and notification dispatch examples.
+The application includes executable order processing, payment validation, and notification dispatch examples, plus a built-in verification command for deterministic behavior checks.
 
 ```bash
 dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
 dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- payment
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- verify
 ```
 
 See the [execution guide](./examples/README.md).
@@ -92,27 +94,23 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
 ```bash
 dotnet restore src/CSharpFundamentals/CSharpFundamentals.slnx
 dotnet build src/CSharpFundamentals/CSharpFundamentals.slnx --configuration Release
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj --configuration Release --no-build -- verify
 ```
+
+## Technical Blog Watch
+
+- [.NET Team: Announcing .NET 10](https://devblogs.microsoft.com/dotnet/announcing-dotnet-10/) explains the runtime, language, and tooling release this repository targets.
 
 ## Repository Structure
 
 ```text
 csharp-fundamentals/
-├── assets/
-├── examples/
-└── src/CSharpFundamentals/CSharpFundamentals/
-    ├── Examples/                  # Executable cross-topic scenarios
-    └── Modules/
-        ├── 01-Variables/
-        ├── 02-DataTypes/
-        ├── 03-TypeConversion/
-        ├── 04-Operators/
-        ├── 05-Strings/
-        ├── 06-Arrays/
-        ├── 07-Methods/
-        ├── 08-ControlFlow/
-        ├── 09-ExceptionHandling/
-        └── 10-Namespaces/
+|-- assets/
+|-- examples/
+`-- src/CSharpFundamentals/CSharpFundamentals/
+    |-- Examples/       # Executable cross-topic scenarios
+    |-- Modules/
+    `-- Verification/   # Built-in behavior checks for the examples
 ```
 
 ## Contribution Standard
