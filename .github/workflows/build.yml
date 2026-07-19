@@ -35,3 +35,12 @@ jobs:
 
       - name: Build in Release mode
         run: dotnet build "$SOLUTION_PATH" --configuration Release --no-restore --warnaserror
+
+      - name: Verify executable examples
+        run: >-
+          dotnet run
+          --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
+          --configuration Release
+          --no-build
+          --
+          verify

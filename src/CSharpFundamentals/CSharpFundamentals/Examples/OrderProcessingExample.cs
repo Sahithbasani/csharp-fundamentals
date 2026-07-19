@@ -2,6 +2,8 @@ namespace CSharpFundamentals.Examples;
 
 public sealed class OrderProcessingExample : IBackendExample
 {
+    private readonly OrderProcessingService _service = new();
+
     public string Name => "Order processing";
 
     public string Description =>
@@ -18,7 +20,7 @@ public sealed class OrderProcessingExample : IBackendExample
                 new OrderLine("REPORTING", 1, 225.50m)
             ]);
 
-        OrderResult result = Process(request);
+        OrderResult result = _service.Process(request);
 
         Console.WriteLine($"Order ID: {result.OrderId}");
         Console.WriteLine($"Subtotal: {result.Subtotal:C}");
@@ -28,40 +30,4 @@ public sealed class OrderProcessingExample : IBackendExample
 
         return Task.CompletedTask;
     }
-
-    private static OrderResult Process(PlaceOrderRequest request)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-
-        if (request.CustomerId == Guid.Empty)
-            throw new ArgumentException("CustomerId is required.", nameof(request));
-
-        if (request.Lines.Count == 0)
-            throw new ArgumentException("At least one order line is required.", nameof(request));
-
-        if (request.Lines.Any(line => line.Quantity <= 0 || line.UnitPrice <= 0))
-            throw new ArgumentException("Order lines require positive quantity and price.", nameof(request));
-
-        decimal subtotal = request.Lines.Sum(line => line.Quantity * line.UnitPrice);
-        decimal tax = decimal.Round(subtotal * 0.0825m, 2, MidpointRounding.AwayFromZero);
-        decimal total = subtotal + tax;
-
-        return new OrderResult(
-            Guid.NewGuid(),
-            subtotal,
-            tax,
-            total,
-            total >= 1_000m);
-    }
-
-    private sealed record PlaceOrderRequest(Guid CustomerId, IReadOnlyList<OrderLine> Lines);
-
-    private sealed record OrderLine(string ProductCode, int Quantity, decimal UnitPrice);
-
-    private sealed record OrderResult(
-        Guid OrderId,
-        decimal Subtotal,
-        decimal Tax,
-        decimal Total,
-        bool RequiresManualReview);
 }

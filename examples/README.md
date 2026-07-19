@@ -1,6 +1,6 @@
 # Runnable Backend Examples
 
-[← Repository home](../README.md) · [Module index](../README.md#module-index)
+[Repository home](../README.md) | [Module index](../README.md#module-index)
 
 These examples are small enough to run locally while using domains and design concerns found in backend services.
 
@@ -9,6 +9,14 @@ These examples are small enough to run locally while using domains and design co
 ```bash
 dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj
 ```
+
+## Verify Expected Behavior
+
+```bash
+dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamentals.csproj -- verify
+```
+
+The `verify` command checks the reusable order, payment, and notification decision paths so regressions surface before a pull request is opened.
 
 ## Available Examples
 
@@ -26,9 +34,9 @@ dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamental
 
 Expected behavior:
 
-- validates customer and line data;
-- calculates subtotal, tax, and total;
-- flags orders at or above the review threshold.
+- validates customer and line data
+- calculates subtotal, tax, and total
+- flags orders at or above the review threshold
 
 ### Payment Validation
 
@@ -38,9 +46,9 @@ dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamental
 
 Expected behavior:
 
-- rejects invalid amounts or unsupported currencies;
-- routes high-risk or large payments to manual review;
-- returns a decision object rather than using exceptions for expected outcomes.
+- rejects invalid amounts or unsupported currencies
+- routes high-risk or large payments to manual review
+- returns a decision object rather than using exceptions for expected outcomes
 
 ### Notification Dispatch
 
@@ -50,9 +58,9 @@ dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamental
 
 Expected behavior:
 
-- resolves a user through a repository interface;
-- respects notification preferences;
-- sends through an asynchronous gateway with cancellation support.
+- resolves a user through a repository interface
+- respects notification preferences
+- sends through an asynchronous gateway with cancellation support
 
 ## Practice Extensions
 
