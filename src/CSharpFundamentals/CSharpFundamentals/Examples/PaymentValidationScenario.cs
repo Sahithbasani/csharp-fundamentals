@@ -2,13 +2,18 @@ namespace CSharpFundamentals.Examples;
 
 internal sealed class PaymentDecisionEngine
 {
-    public PaymentDecision Evaluate(PaymentRequest request) =>
-        request switch
+    public PaymentDecision Evaluate(PaymentRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return request switch
         {
             { Amount: <= 0 } =>
                 PaymentDecision.Rejected("Amount must be positive."),
             { Currency: not "USD" and not "CAD" } =>
                 PaymentDecision.Rejected("Currency is not supported."),
+            { RiskLevel: var risk } when !Enum.IsDefined(risk) =>
+                PaymentDecision.Rejected("Risk level is not supported."),
             { RiskLevel: RiskLevel.High } =>
                 PaymentDecision.Review("High-risk payment requires manual review."),
             { Amount: > 10_000m } =>
@@ -16,6 +21,7 @@ internal sealed class PaymentDecisionEngine
             _ =>
                 PaymentDecision.Approved()
         };
+    }
 }
 
 internal sealed record PaymentRequest(

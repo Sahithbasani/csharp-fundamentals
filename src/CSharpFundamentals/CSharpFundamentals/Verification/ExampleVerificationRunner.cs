@@ -8,6 +8,46 @@ internal sealed class ExampleVerificationRunner
     {
         var checks = new List<VerificationCheckResult>();
 
+        RunCheck(checks, "Payment validation rejects a null request", () =>
+        {
+            var exception = AssertThrows<ArgumentNullException>(
+                () => new PaymentDecisionEngine().Evaluate(null!));
+            AssertEqual("request", exception.ParamName, "Expected the invalid argument to be identified.");
+        });
+
+        foreach (int risk in new[] { -1, 3, int.MaxValue })
+        {
+            foreach (decimal amount in new[] { 250m, 10_001m })
+            {
+                RunCheck(checks, $"Payment validation rejects undefined risk {risk} at amount {amount}", () =>
+                {
+                    var decision = new PaymentDecisionEngine().Evaluate(
+                        new PaymentRequest(Guid.NewGuid(), amount, "USD", (RiskLevel)risk));
+                    AssertEqual("Rejected", decision.Status, "Unknown risk must not be approved or routed as a valid payment.");
+                    AssertEqual("Risk level is not supported.", decision.Reason, "Expected an actionable rejection reason.");
+                });
+            }
+        }
+
+        foreach (string currency in new[] { "USD", "CAD" })
+        {
+            foreach (RiskLevel risk in Enum.GetValues<RiskLevel>())
+            {
+                foreach (decimal amount in new[] { 0m, -1m, 10_000m, 10_000.01m })
+                {
+                    RunCheck(checks, $"Payment boundary: {currency}, {risk}, {amount}", () =>
+                    {
+                        var decision = new PaymentDecisionEngine().Evaluate(
+                            new PaymentRequest(Guid.NewGuid(), amount, currency, risk));
+                        string expected = amount <= 0 ? "Rejected"
+                            : risk == RiskLevel.High || amount > 10_000m ? "Manual review"
+                            : "Approved";
+                        AssertEqual(expected, decision.Status, "Expected existing amount and risk rules to be preserved.");
+                    });
+                }
+            }
+        }
+
         RunCheck(
             checks,
             "Order totals stay deterministic for a valid request",
