@@ -34,9 +34,13 @@ dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamental
 
 Expected behavior:
 
-- validates customer and line data
+- validates customer identifiers, the line collection, product codes, quantities, and prices before calculating totals
 - calculates subtotal, tax, and total
 - flags orders at or above the review threshold
+
+Input contract: `CustomerId` must be non-empty, `Lines` must be non-null and contain at least one non-null line, and every line needs a nonblank `ProductCode`, positive quantity, and positive unit price. Invalid request structure is a caller-contract violation, so the example throws `ArgumentException` or `ArgumentNullException` with a specific reason rather than allowing a downstream LINQ exception to obscure the input defect.
+
+Related reading: Microsoft’s [C# 14 overview](https://devblogs.microsoft.com/dotnet/introducing-csharp-14/) demonstrates concise guard logic in property accessors. The order scenario keeps its guards at the service boundary, where the complete request can be checked before any calculation begins.
 
 ### Payment Validation
 

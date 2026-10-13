@@ -49,6 +49,63 @@ internal sealed class ExampleVerificationRunner
 
         RunCheck(
             checks,
+            "Order validation rejects a null line collection",
+            () =>
+            {
+                var service = new OrderProcessingService();
+
+                ArgumentNullException exception = AssertThrows<ArgumentNullException>(
+                    () => service.Process(
+                        new PlaceOrderRequest(
+                            Guid.Parse("2e8c9d70-6dbe-4e4c-8a7b-b92d7c999a5d"),
+                            null!)));
+
+                AssertEqual("request.Lines", exception.ParamName, "Expected the invalid collection to be identified.");
+            });
+
+        RunCheck(
+            checks,
+            "Order validation rejects a null line",
+            () =>
+            {
+                var service = new OrderProcessingService();
+
+                ArgumentException exception = AssertThrows<ArgumentException>(
+                    () => service.Process(
+                        new PlaceOrderRequest(
+                            Guid.Parse("8f6d1c56-fc91-44bf-a8b6-a44a9dffd3b3"),
+                            [null!])));
+
+                AssertStartsWith(
+                    "Order lines cannot contain null values.",
+                    exception.Message,
+                    "Expected an actionable validation message for null lines.");
+            });
+
+        foreach (string productCode in new[] { "", "   " })
+        {
+            RunCheck(
+                checks,
+                $"Order validation rejects a blank product code ({productCode.Length} characters)",
+                () =>
+                {
+                    var service = new OrderProcessingService();
+
+                    ArgumentException exception = AssertThrows<ArgumentException>(
+                        () => service.Process(
+                            new PlaceOrderRequest(
+                                Guid.Parse("b8a72967-e643-4d49-9e30-b913c26480cd"),
+                                [new OrderLine(productCode, 1, 10m)])));
+
+                    AssertStartsWith(
+                        "Order lines require a product code.",
+                        exception.Message,
+                        "Expected an actionable validation message for product codes.");
+                });
+        }
+
+        RunCheck(
+            checks,
             "Payment validation approves a supported low-risk payment",
             () =>
             {

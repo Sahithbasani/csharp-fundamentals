@@ -12,8 +12,16 @@ internal sealed class OrderProcessingService
         if (request.CustomerId == Guid.Empty)
             throw new ArgumentException("CustomerId is required.", nameof(request));
 
+        ArgumentNullException.ThrowIfNull(request.Lines);
+
         if (request.Lines.Count == 0)
             throw new ArgumentException("At least one order line is required.", nameof(request));
+
+        if (request.Lines.Any(line => line is null))
+            throw new ArgumentException("Order lines cannot contain null values.", nameof(request));
+
+        if (request.Lines.Any(line => string.IsNullOrWhiteSpace(line.ProductCode)))
+            throw new ArgumentException("Order lines require a product code.", nameof(request));
 
         if (request.Lines.Any(line => line.Quantity <= 0 || line.UnitPrice <= 0))
             throw new ArgumentException("Order lines require positive quantity and price.", nameof(request));
