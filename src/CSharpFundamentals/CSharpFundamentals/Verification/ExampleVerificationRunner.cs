@@ -114,6 +114,77 @@ internal sealed class ExampleVerificationRunner
                     "Expected disabled recipients to stop dispatch before gateway calls.");
             });
 
+        RunCheck(
+            checks,
+            "Notification dispatch rejects an empty user ID",
+            () =>
+            {
+                var service = new NotificationService(
+                    new InMemoryUserRepository([]),
+                    new RecordingMessageGateway());
+
+                ArgumentException exception = AssertThrows<ArgumentException>(
+                    () => service.NotifyAsync(Guid.Empty, "Deploy finished.", cancellationToken).GetAwaiter().GetResult());
+
+                AssertStartsWith(
+                    "User ID is required.",
+                    exception.Message,
+                    "Expected an actionable validation message for an empty user ID.");
+            });
+
+        RunCheck(
+            checks,
+            "Notification dispatch rejects a null message",
+            () =>
+            {
+                var service = new NotificationService(
+                    new InMemoryUserRepository([]),
+                    new RecordingMessageGateway());
+
+                ArgumentNullException exception = AssertThrows<ArgumentNullException>(
+                    () => service.NotifyAsync(Guid.NewGuid(), null!, cancellationToken).GetAwaiter().GetResult());
+
+                AssertEqual("message", exception.ParamName, "Expected the invalid message to be identified.");
+            });
+
+        foreach (string message in new[] { "", "   " })
+        {
+            RunCheck(
+                checks,
+                $"Notification dispatch rejects a blank message ({message.Length} characters)",
+                () =>
+                {
+                    var service = new NotificationService(
+                        new InMemoryUserRepository([]),
+                        new RecordingMessageGateway());
+
+                    ArgumentException exception = AssertThrows<ArgumentException>(
+                        () => service.NotifyAsync(Guid.NewGuid(), message, cancellationToken).GetAwaiter().GetResult());
+
+                    AssertStartsWith(
+                        "The value cannot be an empty string or composed entirely of whitespace.",
+                        exception.Message,
+                        "Expected blank notification content to be rejected before a user lookup.");
+                });
+        }
+
+        await RunCheckAsync(
+            checks,
+            "Notification dispatch does not send to a blank email address",
+            async () =>
+            {
+                var userId = Guid.Parse("c31c4b87-cf26-47e5-b4de-ca04e07386f3");
+                var gateway = new RecordingMessageGateway();
+                var service = new NotificationService(
+                    new InMemoryUserRepository([new User(userId, "   ", true)]),
+                    gateway);
+
+                var result = await service.NotifyAsync(userId, "Deploy finished.", cancellationToken);
+
+                AssertEqual("User email unavailable", result.Status, "Expected blank recipient data to stop dispatch.");
+                AssertEqual(0, gateway.SentMessages.Count, "Expected no gateway call for a blank recipient address.");
+            });
+
         await RunCheckAsync(
             checks,
             "Notification dispatch sends a message for an enabled user",
