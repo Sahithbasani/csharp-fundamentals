@@ -60,7 +60,20 @@ Expected behavior:
 
 - resolves a user through a repository interface
 - respects notification preferences
+- rejects empty user IDs and blank message content before repository access
+- does not send when an enabled user has no usable email address
 - sends through an asynchronous gateway with cancellation support
+
+The service treats the user ID and message as caller-controlled input, so malformed
+values fail at the boundary with an actionable exception. A blank email belongs to
+the loaded user record instead, so it returns `User email unavailable` without
+calling the gateway. This distinction keeps invalid requests separate from data that
+cannot be delivered safely.
+
+Related reading: Microsoft's [C# 11 preview update](https://devblogs.microsoft.com/dotnet/csharp-11-preview-updates/)
+explains why .NET guard helpers such as `ArgumentNullException.ThrowIfNull` are a
+clear option for boundary validation. This example additionally uses
+`ArgumentException.ThrowIfNullOrWhiteSpace` for content that must be nonblank.
 
 ## Practice Extensions
 

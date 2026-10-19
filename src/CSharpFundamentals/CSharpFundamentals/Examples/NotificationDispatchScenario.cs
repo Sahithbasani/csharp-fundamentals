@@ -19,6 +19,11 @@ internal sealed class NotificationService(
         string message,
         CancellationToken cancellationToken)
     {
+        if (userId == Guid.Empty)
+            throw new ArgumentException("User ID is required.", nameof(userId));
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
+
         User? user = await users.FindAsync(userId, cancellationToken);
 
         if (user is null)
@@ -26,6 +31,9 @@ internal sealed class NotificationService(
 
         if (!user.NotificationsEnabled)
             return new NotificationResult("Notifications disabled");
+
+        if (string.IsNullOrWhiteSpace(user.Email))
+            return new NotificationResult("User email unavailable");
 
         await gateway.SendAsync(user.Email, message, cancellationToken);
         return new NotificationResult("Sent");
