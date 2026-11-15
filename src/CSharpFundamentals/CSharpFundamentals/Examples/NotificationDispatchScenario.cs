@@ -19,6 +19,8 @@ internal sealed class NotificationService(
         string message,
         CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         User? user = await users.FindAsync(userId, cancellationToken);
 
         if (user is null)

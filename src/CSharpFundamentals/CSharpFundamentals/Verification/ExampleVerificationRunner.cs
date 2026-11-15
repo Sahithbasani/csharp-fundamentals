@@ -133,6 +133,22 @@ internal sealed class ExampleVerificationRunner
                 AssertEqual("alerts@example.com", gateway.SentMessages[0].Destination, "Expected the user email to be the destination.");
             });
 
+        await RunCheckAsync(
+            checks,
+            "Notification dispatch stops before repository access when cancelled",
+            async () =>
+            {
+                var repository = new IgnoringCancellationUserRepository();
+                var service = new NotificationService(repository, new RecordingMessageGateway());
+                using var cancellation = new CancellationTokenSource();
+                cancellation.Cancel();
+
+                await AssertThrowsAsync<OperationCanceledException>(
+                    () => service.NotifyAsync(Guid.NewGuid(), "Deploy finished.", cancellation.Token));
+
+                AssertEqual(0, repository.FindCalls, "Expected cancellation to be observed before repository access.");
+            });
+
         foreach (var check in checks)
         {
             string status = check.Passed ? "[PASS]" : "[FAIL]";
@@ -207,6 +223,21 @@ internal sealed class ExampleVerificationRunner
         throw new InvalidOperationException($"Expected {typeof(TException).Name} to be thrown.");
     }
 
+    private static async Task<TException> AssertThrowsAsync<TException>(Func<Task> action)
+        where TException : Exception
+    {
+        try
+        {
+            await action();
+        }
+        catch (TException exception)
+        {
+            return exception;
+        }
+
+        throw new InvalidOperationException($"Expected {typeof(TException).Name} to be thrown.");
+    }
+
     private sealed record VerificationCheckResult(string Name, bool Passed, string? Detail);
 
     private sealed class RecordingMessageGateway : IMessageGateway
@@ -218,6 +249,17 @@ internal sealed class ExampleVerificationRunner
             cancellationToken.ThrowIfCancellationRequested();
             SentMessages.Add(new SentMessage(destination, message));
             return Task.CompletedTask;
+        }
+    }
+
+    private sealed class IgnoringCancellationUserRepository : IUserRepository
+    {
+        public int FindCalls { get; private set; }
+
+        public Task<User?> FindAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            FindCalls++;
+            return Task.FromResult<User?>(null);
         }
     }
 
