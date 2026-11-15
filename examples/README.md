@@ -60,7 +60,10 @@ Expected behavior:
 
 - resolves a user through a repository interface
 - respects notification preferences
+- checks cancellation before repository access, then passes the token to the repository and gateway
 - sends through an asynchronous gateway with cancellation support
+
+Cancellation is cooperative: dependencies should observe the token too, but the service checks it at its own boundary so a repository that does not do so cannot start work after the caller has cancelled. For background on the distinction between requesting cancellation and an operation actually observing it, see the .NET Blog's [How do I cancel non-cancelable async operations?](https://devblogs.microsoft.com/dotnet/how-do-i-cancel-non-cancelable-async-operations/).
 
 ## Practice Extensions
 
