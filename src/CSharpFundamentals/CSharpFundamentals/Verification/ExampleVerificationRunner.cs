@@ -49,6 +49,23 @@ internal sealed class ExampleVerificationRunner
 
         RunCheck(
             checks,
+            "Payment validation rejects a missing payment ID",
+            () =>
+            {
+                var engine = new PaymentDecisionEngine();
+                var decision = engine.Evaluate(
+                    new PaymentRequest(
+                        Guid.Empty,
+                        250m,
+                        "USD",
+                        RiskLevel.Low));
+
+                AssertEqual("Rejected", decision.Status, "Expected requests without an audit identity to be rejected.");
+                AssertEqual("Payment ID is required.", decision.Reason, "Expected a clear identity validation reason.");
+            });
+
+        RunCheck(
+            checks,
             "Payment validation approves a supported low-risk payment",
             () =>
             {

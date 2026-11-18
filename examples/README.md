@@ -46,9 +46,13 @@ dotnet run --project src/CSharpFundamentals/CSharpFundamentals/CSharpFundamental
 
 Expected behavior:
 
-- rejects invalid amounts or unsupported currencies
+- rejects missing payment identities, invalid amounts, or unsupported currencies
 - routes high-risk or large payments to manual review
 - returns a decision object rather than using exceptions for expected outcomes
+
+The request's `PaymentId` is an audit and idempotency boundary: an empty ID is rejected before risk or amount rules run. Keeping that rule in the decision result makes malformed payment requests observable without approving an untraceable transaction.
+
+For the runtime validation helpers used throughout modern C# code, see the [.NET 8 performance post's discussion of `ThrowIf*` APIs](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/).
 
 ### Notification Dispatch
 

@@ -5,6 +5,8 @@ internal sealed class PaymentDecisionEngine
     public PaymentDecision Evaluate(PaymentRequest request) =>
         request switch
         {
+            { PaymentId: var paymentId } when paymentId == Guid.Empty =>
+                PaymentDecision.Rejected("Payment ID is required."),
             { Amount: <= 0 } =>
                 PaymentDecision.Rejected("Amount must be positive."),
             { Currency: not "USD" and not "CAD" } =>
